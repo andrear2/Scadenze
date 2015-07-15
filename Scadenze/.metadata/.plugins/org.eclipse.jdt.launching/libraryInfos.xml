@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="C:\j2sdk" version="1.7.0_17">
+<bootpath>
+<entry path="C:\j2sdk\lib\resources.jar"/>
+<entry path="C:\j2sdk\lib\rt.jar"/>
+<entry path="C:\j2sdk\lib\sunrsasign.jar"/>
+<entry path="C:\j2sdk\lib\jsse.jar"/>
+<entry path="C:\j2sdk\lib\jce.jar"/>
+<entry path="C:\j2sdk\lib\charsets.jar"/>
+<entry path="C:\j2sdk\lib\jfr.jar"/>
+<entry path="C:\j2sdk\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\j2sdk\lib\ext"/>
+<entry path="C:\Windows\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\j2sdk\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>
