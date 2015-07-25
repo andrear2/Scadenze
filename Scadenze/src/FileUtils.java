@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class FileUtils {
-	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	public static void creaFile(String filename) {
 		File file = new File(filename);
@@ -37,8 +37,9 @@ public class FileUtils {
 					String[] str = line.split(";");
 					Calendar data = new GregorianCalendar();
 					data.setTime(dateFormat.parse(str[0]));
-					String descrizione = str[1];
-					eventiManager.aggiungiEvento(data, descrizione);
+					boolean allDay = Boolean.parseBoolean(str[1]);
+					String descrizione = str[2];
+					eventiManager.aggiungiEvento(data, allDay, descrizione);
 				} catch (Exception e) {
 					System.err.println("Errore nella lettura della data nella riga: " + line);
 				}
@@ -62,10 +63,10 @@ public class FileUtils {
 		}
 	}
 	
-	public static void scriviScadenza(Date date, String descr) {
+	public static void scriviScadenza(Date data, boolean allDay, String descr) {
 		try {
 			PrintWriter output = new PrintWriter(new FileWriter(Scadenze.SCADENZE, true));
-			output.println(dateFormat.format(date) + ";" + descr);
+			output.println(dateFormat.format(data) + ";" + allDay + ";" + descr);
 			output.close();
 		} catch (IOException e) {
 			System.err.println("Errore nella scrittura della scadenza: " + descr);
@@ -80,7 +81,7 @@ public class FileUtils {
 		String[] daCopiare = new String[eventi.size()];
 		int i = 0;
 		for (Evento e: eventi) {
-			daCopiare[i] = dateFormat.format(e.getCalendar().getTime()) + ";" + e.getDescr();
+			daCopiare[i] = dateFormat.format(e.getData().getTime()) + ";" + e.isAllDay() + ";" + e.getDescr();
 			i++;
 		}
 		try {

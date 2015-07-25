@@ -17,7 +17,7 @@ public class GUIMostra extends JFrame {
 	
 	public GUIMostra () {
 		setTitle("Mostra scadenze");
-		setSize(500, 400);	
+		setSize(700, 450);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
@@ -31,8 +31,8 @@ public class GUIMostra extends JFrame {
 		
 		output = new JTextArea(12,25); //area di testo
 		output.setEditable(false);
-		JScrollPane sp = new JScrollPane(output); //in questo modo ho le barre di scorrimento 
-												  //questo componenete si chiama decorator
+		JScrollPane sp = new JScrollPane(output); //in questo modo ho le barre di scorrimento
+		sp.setVisible(true);
 		this.add(sp, BorderLayout.SOUTH);
 		
 		mostra.addActionListener(new ActionListener () {
@@ -59,7 +59,7 @@ public class GUIMostra extends JFrame {
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MILLISECOND, 0);
 		for (Evento e : EventiManager.getInstance().getEventi()) {
-			long diffMilliSec = e.getCalendar().getTimeInMillis() - c.getTimeInMillis();
+			long diffMilliSec = e.getData().getTimeInMillis() - c.getTimeInMillis();
 			long diffGiorni = diffMilliSec / (24 * 60 * 60 * 1000);
 			if (diffGiorni <= 0) {
 				out.append(e.toString3());

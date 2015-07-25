@@ -1,7 +1,6 @@
-27/06/2015;concerto vasco!!!
-10/09/2015;prenotare ecocardiografia irm
-15/09/2015;visita medica hitball
-03/10/2015;assicurazione Focus
-19/02/2016;revisione Focus
-09/05/2019;patente Andrea
-21/07/2021;carta identità Andrea
+10/09/2015 00:00;true;prenotare ecocardiografia irm
+15/09/2015 00:00;true;visita medica hitball
+03/10/2015 00:00;true;assicurazione Focus
+19/02/2016 00:00;true;revisione Focus
+09/05/2019 00:00;true;patente Andrea
+21/07/2021 00:00;true;carta identità Andrea

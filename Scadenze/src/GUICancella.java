@@ -17,7 +17,7 @@ public class GUICancella extends JFrame {
 	
 	public GUICancella () {
 		setTitle("Cancella una scadenza");
-		setSize(500, 125);	
+		setSize(600, 150);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
@@ -37,6 +37,8 @@ public class GUICancella extends JFrame {
 				clickSulPulsanteCancella();
 			}
 		});
+		
+		this.getRootPane().setDefaultButton(cancella);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);

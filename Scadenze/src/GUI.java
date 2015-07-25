@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -98,21 +99,26 @@ public class GUI extends JFrame {
 	
 	public void clickSulPulsanteMostra() {
 		JFrame f = new GUIMostra();
+		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
 	}
 	
 	public void clickSulPulsanteModifica() {
 		JFrame f = new GUIModifica();
+		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
 	}
 	
 	public void clickSulPulsanteInserisci() {
 		JFrame f = new GUIInserisci();
+		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
 	}
 
 	public void clickSulPulsanteCancella() {
 		JFrame f = new GUICancella();
+		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
 	}
 	
 	public void clickSulPulsanteGestioneMail() {
 		JFrame f = new GUIMailingList();
+		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
 	}
 }

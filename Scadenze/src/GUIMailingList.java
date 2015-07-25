@@ -24,7 +24,7 @@ public class GUIMailingList extends JFrame {
 		emailManager.ordinaEmail();
 		
 		setTitle("Mailing list");
-		setSize(500, 125);	
+		setSize(600, 150);	
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
@@ -44,7 +44,7 @@ public class GUIMailingList extends JFrame {
 		p2.add(input);
 		inserisci = new JButton("INSERISCI"); 
 		p2.add(inserisci);
-		this.add(p2, BorderLayout.CENTER);
+		this.add(p2, BorderLayout.SOUTH);
 		
 		cancella.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {

@@ -30,7 +30,7 @@ public class EventiManager {
 	public String[] getDescrizioniEventi() {
 		String[] descr = new String[eventi.size()];
 		int i = 0;
-		for (Evento e : eventi) {
+		for (Evento e: eventi) {
 			descr[i] = e.getDescr();
 			i++;
 		}
@@ -50,8 +50,8 @@ public class EventiManager {
 		Collections.sort(eventi, cmp);
 	}
 	
-	public void aggiungiEvento(Calendar data, String descrizione) {
-		eventi.add(new Evento(data, descrizione));
+	public void aggiungiEvento(Calendar data, boolean allDay, String descrizione) {
+		eventi.add(new Evento(data, allDay, descrizione));
 	}
 	
 	public boolean rimuoviEvento(String descrizione) {
@@ -64,19 +64,25 @@ public class EventiManager {
 		return false;
 	}
 	
-	public Calendar modificaEvento(Calendar cal, String descrizione) {
-		Calendar olddata = new GregorianCalendar();
+	public Evento modificaEvento(Calendar cal, boolean allDay, String newDescr, String descrizione) {
 		for (Evento e: eventi) {
-			if (e.getDescr().compareTo(descrizione)==0) {
-				olddata = e.getCalendar();
+			if (e.getDescr().compareTo(descrizione) == 0) {
+				Evento eOld = new Evento(e.getData(), e.isAllDay(), e.getDescr());
+				if (allDay) {
+					cal.set(Calendar.HOUR_OF_DAY, 0);
+					cal.set(Calendar.MINUTE, 0);
+				}
+				e.setDescr(newDescr);
 				e.setData(cal);
-				return olddata;
+				e.setAllDay(allDay);
+				e.setDiff(e.calcolaDiff());
+				return eOld;
 			}
 		}
 		return null;
 	}
 	
-	public boolean eventoGiaInserito (String descrizione) {
+	public boolean isEventoGiaInserito(String descrizione) {
 		for (Evento e: eventi) {
 			if (e.getDescr().equals(descrizione)) {
 				return true;

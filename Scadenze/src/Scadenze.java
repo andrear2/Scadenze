@@ -1,8 +1,10 @@
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Scadenze {
 	public static final String SCADENZE = "Scadenze.txt";
 	public static final String EMAIL = "Email.txt";
+	public static final String ICON = "images/schedule.png";
 	
 	private static boolean inviaMail = true;
 	
@@ -19,6 +21,7 @@ public class Scadenze {
 		StringBuffer output = creaAreaTestoEInviaMail(eventiManager);
 		inviaMail = false;
 		JFrame f = new GUI(output.toString());
+		f.setIconImage(new ImageIcon(ICON).getImage());
 	}
 
 	public static StringBuffer creaAreaTestoEInviaMail(EventiManager eventiManager) {
