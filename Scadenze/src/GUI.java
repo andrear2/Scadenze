@@ -99,22 +99,22 @@ public class GUI extends JFrame {
 	
 	public void clickSulPulsanteMostra() {
 		JFrame f = new GUIMostra();
-		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
+		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
 	}
 	
 	public void clickSulPulsanteModifica() {
 		JFrame f = new GUIModifica();
-		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
+		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
 	}
 	
 	public void clickSulPulsanteInserisci() {
 		JFrame f = new GUIInserisci();
-		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
+		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
 	}
 
 	public void clickSulPulsanteCancella() {
 		JFrame f = new GUICancella();
-		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
+		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
 	}
 	
 	public void clickSulPulsanteGestioneMail() {

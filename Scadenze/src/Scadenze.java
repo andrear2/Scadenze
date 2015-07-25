@@ -21,7 +21,7 @@ public class Scadenze {
 		StringBuffer output = creaAreaTestoEInviaMail(eventiManager);
 		inviaMail = false;
 		JFrame f = new GUI(output.toString());
-		f.setIconImage(new ImageIcon(ICON).getImage());
+		f.setIconImage(new ImageIcon(Scadenze.class.getClassLoader().getResource(ICON)).getImage());
 	}
 
 	public static StringBuffer creaAreaTestoEInviaMail(EventiManager eventiManager) {
