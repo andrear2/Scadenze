@@ -5,6 +5,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -108,6 +109,12 @@ public class GUIInserisci extends JFrame {
 			Date ora = (Date) time.getValue();
 			data.set(Calendar.HOUR_OF_DAY, ora.getHours());
 			data.set(Calendar.MINUTE, ora.getMinutes());
+		}
+		if (data.before(new GregorianCalendar())) {
+			int scelta = JOptionPane.showConfirmDialog(null, "La data inserita è precedente alla data odierna. Inserire comunque la scadenza?", "ATTENZIONE", JOptionPane.OK_CANCEL_OPTION);
+			if (scelta != 0) {
+				return;
+			}
 		}
 		eventiManager.aggiungiEvento(data, varAllDay, descr);
 		eventiManager.ordinaEventi();

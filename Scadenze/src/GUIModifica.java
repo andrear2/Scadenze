@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -127,6 +128,12 @@ public class GUIModifica extends JFrame {
 			Date ora = (Date) time.getValue();
 			data.set(Calendar.HOUR_OF_DAY, ora.getHours());
 			data.set(Calendar.MINUTE, ora.getMinutes());
+		}
+		if (data.before(new GregorianCalendar())) {
+			int scelta = JOptionPane.showConfirmDialog(null, "La data inserita è precedente alla data odierna. Modificare comunque la scadenza?", "ATTENZIONE", JOptionPane.OK_CANCEL_OPTION);
+			if (scelta != 0) {
+				return;
+			}
 		}
 		Evento eOld = eventiManager.modificaEvento(data, varAllDay, input.getText(), descr);
 		if (eOld != null) {
