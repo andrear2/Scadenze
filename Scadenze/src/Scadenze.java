@@ -21,10 +21,11 @@ public class Scadenze {
 		StringBuffer output = creaAreaTestoEInviaMail(eventiManager);
 		inviaMail = false;
 		JFrame f = new GUI(output.toString());
-		f.setIconImage(new ImageIcon(Scadenze.class.getClassLoader().getResource(ICON)).getImage());
+		setIcon(f);
 	}
 
 	public static StringBuffer creaAreaTestoEInviaMail(EventiManager eventiManager) {
+		MessaggiManager messaggiManager = MessaggiManager.getInstance();
 		StringBuffer output = new StringBuffer();
 		for (Evento e : eventiManager.getEventi()) {
 			if (e.getDiff() < 0) {
@@ -51,7 +52,7 @@ public class Scadenze {
 			}
 		}
 		if (output.length() == 0) {
-			output.append("Non ci sono scadenze in programma nei prossimi 15 giorni. Buona giornata :)");
+			output.append(messaggiManager.getMessaggi().getString("no_deadlines_15_days"));
 		}
 		return output;
 	}
@@ -68,9 +69,13 @@ public class Scadenze {
 			}
 		}
 		if (output.length() == 0) {
-			output.append("Non ci sono scadenze in programma nei prossimi 15 giorni. Buona giornata :)");
+			output.append(MessaggiManager.getInstance().getMessaggi().getString("no_deadlines_15_days"));
 		}
 		return output;
+	}
+
+	public static void setIcon(JFrame f) {
+		f.setIconImage(new ImageIcon(Scadenze.class.getClassLoader().getResource(ICON)).getImage());
 	}
 	
 }

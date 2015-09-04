@@ -1,6 +1,10 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,25 +18,35 @@ import javax.swing.JTextArea;
 public class GUI extends JFrame {
 	private static final long serialVersionUID = -6473494817210166309L;
 	
-	private static final String NESSUNA_SCADENZA_INSERITA = "ATTENZIONE: non hai ancora inserito nessuna scadenza";
-	private static final String ATTENZIONE = "ATTENZIONE";
-	private static final String MODIFICA = "MODIFICA";
-	private static final String INSERISCI = "INSERISCI";
-	private static final String CANCELLA = "CANCELLA";
-	private static final String MOSTRA = "MOSTRA";
-	private static final String MAILING_LIST = "MAILING LIST";
+	private static final String IT_FLAG = "images/it.png";
+	private static final String EN_FLAG = "images/en.png";
 	
 	public static JTextArea output;
-	private JButton modifica, mostra, inserisci, cancella, gestioneMail;
+	private JLabel gestione;
+	private JButton modifica, inserisci, cancella, mostra, gestioneMail;
+	private MessaggiManager messaggiManager;
 	
 	public GUI (String testo) {
-		setTitle("Scadenze");
-		setSize(600, 200);	
+		// internazionalizzazione
+		messaggiManager = MessaggiManager.getInstance();
+		messaggiManager.setLocale(new Locale("it", "IT"));
+		
+		setSize(600, 200);
 		setLayout(new BorderLayout());
 		
-		JPanel p = new JPanel();
-		JLabel l = new JLabel("Gestione scadenze"); //etichetta
-		p.add(l);
+		JPanel p = new JPanel(new BorderLayout());
+		gestione = new JLabel(); //etichetta
+		p.add(gestione, BorderLayout.CENTER);
+		JPanel flagPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		Image itaFlag = new ImageIcon(GUI.class.getClassLoader().getResource(IT_FLAG)).getImage();
+		JButton itFlag = new JButton(new ImageIcon(itaFlag.getScaledInstance(25, 16, Image.SCALE_SMOOTH)));
+		itFlag.setPreferredSize(new Dimension(30, 20));
+		flagPanel.add(itFlag);
+		Image engFlag = new ImageIcon(GUI.class.getClassLoader().getResource(EN_FLAG)).getImage();
+		JButton enFlag = new JButton(new ImageIcon(engFlag.getScaledInstance(25, 16, Image.SCALE_SMOOTH)));
+		enFlag.setPreferredSize(new Dimension(30, 20));
+		flagPanel.add(enFlag);
+		p.add(flagPanel, BorderLayout.EAST);
 		this.add(p, BorderLayout.NORTH); //aggiungo il panel alla finestra in posizione nord
 		
 		output = new JTextArea(); //area di testo
@@ -42,83 +56,96 @@ public class GUI extends JFrame {
 		output.append(testo); 
 
 		JPanel p2 = new JPanel();
-		modifica = new JButton(MODIFICA); //bottone
+		modifica = new JButton();
 		p2.add(modifica);
-		inserisci = new JButton(INSERISCI); //bottone
+		inserisci = new JButton();
 		p2.add(inserisci);
-		cancella = new JButton(CANCELLA); //bottone
+		cancella = new JButton();
 		p2.add(cancella);
-		mostra = new JButton(MOSTRA);
+		mostra = new JButton();
 		p2.add(mostra);
-		gestioneMail = new JButton(MAILING_LIST);
+		gestioneMail = new JButton();
 		p2.add(gestioneMail);
 		this.add(p2, BorderLayout.SOUTH);
 		
-		//Gestione eventi
+		setMessages();
+		
+		// Gestione eventi
 		modifica.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
 				if (EventiManager.getInstance().getEventi().size() > 0) {
-					clickSulPulsanteModifica();
+					JFrame f = new GUIModifica();
+					Scadenze.setIcon(f);
 				} else {
-					JOptionPane.showMessageDialog(null, NESSUNA_SCADENZA_INSERITA, ATTENZIONE, JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("no_deadline_inserted"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
+		
 		mostra.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
 				if (EventiManager.getInstance().getEventi().size() > 0) {
-					clickSulPulsanteMostra();
+					JFrame f = new GUIMostra();
+					Scadenze.setIcon(f);
 				} else {
-					JOptionPane.showMessageDialog(null, NESSUNA_SCADENZA_INSERITA, ATTENZIONE, JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("no_deadline_inserted"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
+		
 		inserisci.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
-				clickSulPulsanteInserisci();
+				JFrame f = new GUIInserisci();
+				Scadenze.setIcon(f);
 			}
 		});
+		
 		cancella.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
 				if (EventiManager.getInstance().getEventi().size() > 0) {
-					clickSulPulsanteCancella();
+					JFrame f = new GUICancella();
+					Scadenze.setIcon(f);
 				} else {
-					JOptionPane.showMessageDialog(null, NESSUNA_SCADENZA_INSERITA, ATTENZIONE, JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("no_deadline_inserted"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
+		
 		gestioneMail.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
-				clickSulPulsanteGestioneMail();
+				JFrame f = new GUIMailingList();
+				Scadenze.setIcon(f);
+			}
+		});
+		
+		itFlag.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent e) {
+				MessaggiManager.getInstance().setLocale(new Locale("it", "IT"));
+				setMessages();
+				output.setText(Scadenze.creaAreaTesto(EventiManager.getInstance()).toString());
+			}
+		});
+		
+		enFlag.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent e) {
+				MessaggiManager.getInstance().setLocale(new Locale("en", "US"));
+				setMessages();
+				output.setText(Scadenze.creaAreaTesto(EventiManager.getInstance()).toString());
 			}
 		});
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
-	
-	public void clickSulPulsanteMostra() {
-		JFrame f = new GUIMostra();
-		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
-	}
-	
-	public void clickSulPulsanteModifica() {
-		JFrame f = new GUIModifica();
-		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
-	}
-	
-	public void clickSulPulsanteInserisci() {
-		JFrame f = new GUIInserisci();
-		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
-	}
 
-	public void clickSulPulsanteCancella() {
-		JFrame f = new GUICancella();
-		f.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(Scadenze.ICON)).getImage());
+	private void setMessages() {
+		setTitle(messaggiManager.getMessaggi().getString("deadlines"));
+		gestione.setText(messaggiManager.getMessaggi().getString("manage"));
+		modifica.setText(messaggiManager.getMessaggi().getString("modify"));
+		inserisci.setText(messaggiManager.getMessaggi().getString("insert"));
+		cancella.setText(messaggiManager.getMessaggi().getString("delete"));
+		mostra.setText(messaggiManager.getMessaggi().getString("show"));
+		gestioneMail.setText(messaggiManager.getMessaggi().getString("mailing"));
 	}
 	
-	public void clickSulPulsanteGestioneMail() {
-		JFrame f = new GUIMailingList();
-		f.setIconImage(new ImageIcon(Scadenze.ICON).getImage());
-	}
 }

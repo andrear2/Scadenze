@@ -10,6 +10,7 @@ public class Evento {
 	private boolean allDay;
 	private String descr;
 	private long diff;
+	private MessaggiManager messaggiManager;
 	
 	public Evento (Calendar data, boolean allDay, String descr) {
 		this.data = data;
@@ -22,6 +23,7 @@ public class Evento {
 		this.allDay = allDay;
 		this.descr = descr;
 		this.diff = calcolaDiff();
+		this.messaggiManager = MessaggiManager.getInstance();
 	}
 	
 	public long getDiff() {
@@ -68,25 +70,25 @@ public class Evento {
 
 	public String toString1() {
 		if (allDay) {
-			return "ATTENZIONE!! Il " + dateFormat.format(data.getTime()) + " è scaduto: "+ descr + "\tCancellare o modificare la scadenza\n";
+			return messaggiManager.getMessaggi().getString("attention_on") + dateFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("expired") + descr + messaggiManager.getMessaggi().getString("delete_modify");
 		} else {
-			return "ATTENZIONE!! Il " + dateFormat.format(data.getTime()) + " alle " + timeFormat.format(data.getTime()) + " è scaduto: "+ descr + "\tCancellare o modificare la scadenza\n";
+			return messaggiManager.getMessaggi().getString("attention_on") + dateFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("at") + timeFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("expired") + descr + messaggiManager.getMessaggi().getString("delete_modify");
 		}
 	}
 	
 	public String toString2() {
 		if (allDay) {
-			return "ATTENZIONE!! Oggi scade: " + descr + "\n";
+			return messaggiManager.getMessaggi().getString("today_expires") + descr + "\n";
 		} else {
-			return "ATTENZIONE!! Oggi alle " + timeFormat.format(data.getTime()) + " scade: "+ descr + "\n";
+			return messaggiManager.getMessaggi().getString("today_at") + timeFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("expired") + descr + "\n";
 		}
 	}
 	
 	public String toString3() {
 		if (allDay) {
-			return "Il " + dateFormat.format(data.getTime()) + " scade: "+ descr + "\n";
+			return messaggiManager.getMessaggi().getString("on") + dateFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("expire") + descr + "\n";
 		} else {
-			return "Il " + dateFormat.format(data.getTime()) + " alle " + timeFormat.format(data.getTime()) + " scade: " + descr + "\n";
+			return messaggiManager.getMessaggi().getString("on") + dateFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("at") + timeFormat.format(data.getTime()) + messaggiManager.getMessaggi().getString("expire") + descr + "\n";
 		}
 	}
 

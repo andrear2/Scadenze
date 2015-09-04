@@ -14,18 +14,21 @@ public class GUIMostra extends JFrame {
 	private JButton mostra, tutte;
 	private JTextArea output;
 	private JCalendar cal;
+	private MessaggiManager messaggiManager;
 	
 	public GUIMostra () {
-		setTitle("Mostra scadenze");
+		messaggiManager = MessaggiManager.getInstance();
+		
+		setTitle(messaggiManager.getMessaggi().getString("show_deadlines"));
 		setSize(700, 450);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
-		mostra = new JButton("MOSTRA FINO A"); 
+		mostra = new JButton(messaggiManager.getMessaggi().getString("show_up_to")); 
 		p.add(mostra);
-		cal = new JCalendar();
+		cal = new JCalendar(messaggiManager.getLocale());
 		p.add(cal);
-		tutte = new JButton("MOSTRA TUTTE");
+		tutte = new JButton(messaggiManager.getMessaggi().getString("show_all"));
 		p.add(tutte);
 		this.add(p, BorderLayout.NORTH); 
 		
@@ -66,7 +69,7 @@ public class GUIMostra extends JFrame {
 			}
 		}
 		if (out.length() == 0) {
-			out.append("Non ci sono scadenze precedenti alla data indicata");
+			out.append(messaggiManager.getMessaggi().getString("no_deadlines_before"));
 		}
 		output.append(out.toString()); 
 	}

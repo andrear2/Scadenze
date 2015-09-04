@@ -34,17 +34,20 @@ public class GUIModifica extends JFrame {
 	private JTextField input;
 	private JButton modifica;
 	private boolean varAllDay;
+	private MessaggiManager messaggiManager;
 	
 	public GUIModifica () {
+		messaggiManager = MessaggiManager.getInstance();
+		
 		EventiManager eventiManager = EventiManager.getInstance();
 		List<Evento> eventi = eventiManager.getEventi();
 		
-		setTitle("Modifica una scadenza");
+		setTitle(messaggiManager.getMessaggi().getString("modify_deadline"));
 		setSize(700, 350);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
-		JLabel l = new JLabel("Scegliere la scadenza da modificare"); //etichetta
+		JLabel l = new JLabel(messaggiManager.getMessaggi().getString("choose_deadline_modify"));
 		p.add(l);
 		String[] descr = new String[eventi.size()];
 		int i = 0;
@@ -67,11 +70,11 @@ public class GUIModifica extends JFrame {
 		
 		JPanel innerPanel = new JPanel(new BorderLayout());
 		JPanel p2 = new JPanel();
-		JLabel l2 = new JLabel("Scegliere la nuova data");
+		JLabel l2 = new JLabel(messaggiManager.getMessaggi().getString("insert_date"));
 		p2.add(l2);
-		cal = new JCalendar();
+		cal = new JCalendar(messaggiManager.getLocale());
 		p2.add(cal);
-		allDay = new JCheckBox("Tutto il giorno");
+		allDay = new JCheckBox(messaggiManager.getMessaggi().getString("all_day"));
 		allDay.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -93,7 +96,7 @@ public class GUIModifica extends JFrame {
 		innerPanel.add(p2, BorderLayout.NORTH);
 		
 		JPanel p3 = new JPanel();
-		JLabel l3 = new JLabel("Descrizione");
+		JLabel l3 = new JLabel(messaggiManager.getMessaggi().getString("description"));
 		p3.add(l3);
 		input = new JTextField(40);
 		p3.add(input);
@@ -101,7 +104,7 @@ public class GUIModifica extends JFrame {
 		this.add(innerPanel, BorderLayout.CENTER);
 		
 		JPanel p4 = new JPanel();
-		modifica = new JButton("MODIFICA"); //bottone
+		modifica = new JButton(messaggiManager.getMessaggi().getString("modify")); //bottone
 		p4.add(modifica);
 		this.add(p4, BorderLayout.SOUTH);
 		
@@ -130,7 +133,7 @@ public class GUIModifica extends JFrame {
 			data.set(Calendar.MINUTE, ora.getMinutes());
 		}
 		if (data.before(new GregorianCalendar())) {
-			int scelta = JOptionPane.showConfirmDialog(null, "La data inserita è precedente alla data odierna. Modificare comunque la scadenza?", "ATTENZIONE", JOptionPane.OK_CANCEL_OPTION);
+			int scelta = JOptionPane.showConfirmDialog(null, messaggiManager.getMessaggi().getString("date_before_today"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.OK_CANCEL_OPTION);
 			if (scelta != 0) {
 				return;
 			}
@@ -152,7 +155,7 @@ public class GUIModifica extends JFrame {
 			} else {
 				a  = dateTimeFormat.format(cal.getCalendar().getTime());
 			}
-			JOptionPane.showMessageDialog(null, "Scadenza modificata: " + descr + " da " + da + " a " + a, "ATTENZIONE", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("deadline_modified")+ descr + messaggiManager.getMessaggi().getString("from") + da + messaggiManager.getMessaggi().getString("to") + a, messaggiManager.getMessaggi().getString("attention"), JOptionPane.INFORMATION_MESSAGE);
 			GUI.output.setText(Scadenze.creaAreaTesto(EventiManager.getInstance()).toString());
 			// all'uscita dal popup chiudo la GUI
 			this.dispose();

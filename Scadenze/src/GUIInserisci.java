@@ -29,18 +29,21 @@ public class GUIInserisci extends JFrame {
 	private JSpinner time;
 	private JTextField input;
 	private boolean varAllDay;
+	private MessaggiManager messaggiManager;
 	
 	public GUIInserisci () {
-		setTitle("Inserisci una scadenza");
+		messaggiManager = MessaggiManager.getInstance();
+		
+		setTitle(messaggiManager.getMessaggi().getString("insert_deadline"));
 		setSize(700, 350);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
-		JLabel l = new JLabel("Inserire la data della nuova scadenza"); //etichetta
+		JLabel l = new JLabel(messaggiManager.getMessaggi().getString("insert_date"));
 		p.add(l);
-		cal = new JCalendar();
+		cal = new JCalendar(messaggiManager.getLocale());
 		p.add(cal);
-		allDay = new JCheckBox("Tutto il giorno");
+		allDay = new JCheckBox(messaggiManager.getMessaggi().getString("all_day"));
 		allDay.setSelected(true);
 		varAllDay = true;
 		allDay.addItemListener(new ItemListener() {
@@ -69,14 +72,14 @@ public class GUIInserisci extends JFrame {
 		this.add(p, BorderLayout.NORTH);
 		
 		JPanel p2 = new JPanel();
-		JLabel l2 = new JLabel("Inserire la descrizione della nuova scadenza");
+		JLabel l2 = new JLabel(messaggiManager.getMessaggi().getString("insert_description"));
 		p2.add(l2);
 		input = new JTextField(40);
 		p2.add(input);
 		this.add(p2, BorderLayout.CENTER);
 		
 		JPanel p3 = new JPanel();
-		inserisci = new JButton("INSERISCI"); 
+		inserisci = new JButton(messaggiManager.getMessaggi().getString("insert")); 
 		p3.add(inserisci);
 		this.add(p3, BorderLayout.SOUTH);
 		
@@ -97,11 +100,11 @@ public class GUIInserisci extends JFrame {
 		
 		String descr = input.getText();
 		if(descr.trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Nessuna descrizione inserita", "ATTENZIONE", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("no_description"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (eventiManager.isEventoGiaInserito(descr)) {
-			JOptionPane.showMessageDialog(null, "La scadenza inserita esiste già", "ATTENZIONE", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("deadline_already_present"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		Calendar data = cal.getCalendar();
@@ -111,7 +114,7 @@ public class GUIInserisci extends JFrame {
 			data.set(Calendar.MINUTE, ora.getMinutes());
 		}
 		if (data.before(new GregorianCalendar())) {
-			int scelta = JOptionPane.showConfirmDialog(null, "La data inserita è precedente alla data odierna. Inserire comunque la scadenza?", "ATTENZIONE", JOptionPane.OK_CANCEL_OPTION);
+			int scelta = JOptionPane.showConfirmDialog(null, messaggiManager.getMessaggi().getString("date_before_today"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.OK_CANCEL_OPTION);
 			if (scelta != 0) {
 				return;
 			}
@@ -119,7 +122,7 @@ public class GUIInserisci extends JFrame {
 		eventiManager.aggiungiEvento(data, varAllDay, descr);
 		eventiManager.ordinaEventi();
 		FileUtils.scriviScadenza(data.getTime(), varAllDay, descr);
-		JOptionPane.showMessageDialog(null, "Scadenza inserita", "ATTENZIONE", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("deadline_inserted"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.INFORMATION_MESSAGE);
 		GUI.output.setText(Scadenze.creaAreaTesto(EventiManager.getInstance()).toString());
 		// all'uscita dal popup chiudo la GUI
 		this.dispose();

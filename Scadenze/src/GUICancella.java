@@ -14,21 +14,24 @@ public class GUICancella extends JFrame {
 	
 	private JComboBox<String> lista;
 	private JButton cancella;
+	private MessaggiManager messaggiManager;
 	
 	public GUICancella () {
-		setTitle("Cancella una scadenza");
+		messaggiManager = MessaggiManager.getInstance();
+		
+		setTitle(messaggiManager.getMessaggi().getString("delete_deadline"));
 		setSize(600, 150);
 		setLayout(new BorderLayout());
 		
 		JPanel p = new JPanel();
-		JLabel l = new JLabel("Scegliere la scadenza da cancellare"); //etichetta
+		JLabel l = new JLabel(messaggiManager.getMessaggi().getString("choose_deadline_delete"));
 		p.add(l);
 		lista = new JComboBox<String>(EventiManager.getInstance().getDescrizioniEventi());
 		p.add(lista);
 		this.add(p, BorderLayout.NORTH);
 		
 		JPanel p2 = new JPanel();
-		cancella = new JButton("CANCELLA"); //bottone
+		cancella = new JButton(messaggiManager.getMessaggi().getString("delete"));
 		p2.add(cancella);
 		this.add(p2, BorderLayout.SOUTH);
 
@@ -50,7 +53,7 @@ public class GUICancella extends JFrame {
 		String daCancellare = lista.getSelectedItem().toString();
 		if (eventiManager.rimuoviEvento(daCancellare)) {
 			FileUtils.scriviScadenze();
-			JOptionPane.showMessageDialog(null, "La scadenza è stata cancellata", "ATTENZIONE", JOptionPane.OK_CANCEL_OPTION);
+			JOptionPane.showMessageDialog(null, messaggiManager.getMessaggi().getString("deadline_deleted"), messaggiManager.getMessaggi().getString("attention"), JOptionPane.OK_CANCEL_OPTION);
 			GUI.output.setText(Scadenze.creaAreaTesto(eventiManager).toString());
 			// all'uscita dal popup chiudo la GUI
 			this.dispose();
